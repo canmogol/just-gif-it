@@ -47,3 +47,4 @@ output.txt
 src/main/resources/proto/*
 src/main/resources/xsd/*
 mvnw*
+*.curl
