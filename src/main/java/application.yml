@@ -6,9 +6,12 @@
 #multipart.location=${java.io.tmpdir}
 
 # SPRING BOOT 1.5
-spring.http.multipart.max-file-size=50MB
-spring.http.multipart.max-request-size=50MB
-spring.http.multipart.location=${java.io.tmpdir}
+spring
+  http
+    multipart
+      max-file-size: 50MB
+      max-request-size: 50MB
+      location: ${java.io.tmpdir}
 
 # can exclude using properties file
 #spring.autoconfigure.exclude=com.fererlab.controller.UploadController
@@ -21,8 +24,18 @@ spring.http.multipart.location=${java.io.tmpdir}
 # DAO (PersistenceExceptionTranslationAutoConfiguration)
 #spring.dao.exceptiontranslation.enabled=false
 # Spring MVC
-spring.mvc.favicon.enabled=false
+spring
+  mvc
+    favicon
+      enabled: false
 
-# matchers for ConditionalOnX
-com.fererlab.create-result-dir=true
-com.fererlab.optimize=true
+# matchers for ConditionalOnX and gif location
+com
+  fererlab
+    create-result-dir: true
+    optimize: true
+    gif-location: ${java.io.tmpdir}/gif
+
+logging:
+  level.: DEBUG
+
