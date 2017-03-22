@@ -5,6 +5,7 @@ import com.fererlab.services.GifEncoderService;
 import com.fererlab.services.VideoDecoderService;
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import org.bytedeco.javacv.FFmpegFrameFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,6 +29,7 @@ import java.io.File;
 @EnableConfigurationProperties(JustGifItProperties.class)
 public class JustGifItAutoConfiguration {
 
+    @Autowired
     private JustGifItProperties properties;
 
     @ConditionalOnProperty(prefix = "com.fererlab",
@@ -63,8 +65,10 @@ public class JustGifItAutoConfiguration {
     @ConditionalOnWebApplication
     public static class WebConfiguration {
 
-        @Value("${spring.http.multipart.location}/gif/")
-        private String gifLocation;
+//        @Value("${spring.http.multipart.location}/gif/")
+//        private String gifLocation;
+        @Autowired
+        private JustGifItProperties properties;
 
         @Bean
         @ConditionalOnProperty(prefix = "com.fererlab", name = "optimize")
@@ -96,7 +100,7 @@ public class JustGifItAutoConfiguration {
                 @Override
                 public void addResourceHandlers(ResourceHandlerRegistry registry) {
                     registry.addResourceHandler("/gif/**")
-                            .addResourceLocations("file:" + gifLocation);
+                            .addResourceLocations("file:" + properties.getGifLocation().getAbsolutePath());
                     super.addResourceHandlers(registry);
                 }
             };

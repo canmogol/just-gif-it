@@ -60,7 +60,7 @@ see the options file for dependencies and project name, artifact id etc.
         * classpath:/config AND classpath:
         
 #### 6. @PropertySource annotation
-* Can be defined for propery files not YAML files 
+* Can be defined for property files not YAML files 
 
 ```java
 @SpringBootApplication
@@ -83,6 +83,49 @@ public class Application{
 }
 ```
         
+## Actuators - Builtin Production Ready Endpoints
+
+* `/autoconfig` for reporting
+* `/beans` for all beans
+* `/configprops` for all config
+* `/dump` for memory dump
+* `/health` to check application
+* [rest of the endpoints](http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html)
+
+#### Request to /health
+
+Spring boot creates a password for default user 'user', you may find the password in the logs 'Using default security password: HERE_THE_PASSWORD'
+
+A GET request to /health only returns a response as
+
+```json
+{
+  "status":"UP"
+} 
+```
+
+same request with the user and password as basic auth, should return more information
+
+```json
+{
+  "status": "UP",
+  "justGifIt": {
+    "status": "UP",
+    "JustGifIt-Key": "JustGifIt-Key"
+  },
+  "diskSpace": {
+    "status": "UP",
+    "total": 120101797888,
+    "free": 21861167104,
+    "threshold": 10485760
+  }
+}
+```
+ 
+
+ 
+
+
 
 
 

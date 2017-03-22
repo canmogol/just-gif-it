@@ -1,6 +1,6 @@
 package com.fererlab;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
@@ -16,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 
 // http://docs.spring.io/spring-boot/docs/current/reference/html/auto-configuration-classes.html
 //@EnableAutoConfiguration(exclude = {com.fererlab.controller.UploadController.class})
@@ -27,8 +26,10 @@ import java.io.File;
 })
 public class JustGifItApplication {
 
-    @Value("${spring.http.multipart.location}/gif/")
-    private String gifLocation;
+    //    @Value("${spring.http.multipart.location}/gif/")
+    //    private String gifLocation;
+    @Autowired
+    private JustGifItProperties properties;
 
     public static void main(String[] args) {
         SpringApplication.run(JustGifItApplication.class, args);
@@ -36,9 +37,9 @@ public class JustGifItApplication {
 
     @PostConstruct
     private void init() {
-        File gifFolder = new File(gifLocation);
-        if (!gifFolder.exists()) {
-            gifFolder.mkdir();
+//        File gifFolder = new File(gifLocation);
+        if (!properties.getGifLocation().exists()) {
+            properties.getGifLocation().mkdir();
         }
     }
 
@@ -69,7 +70,7 @@ public class JustGifItApplication {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/gif/**")
-                        .addResourceLocations("file:" + gifLocation);
+                        .addResourceLocations("file:" + properties.getGifLocation().getAbsolutePath());
                 super.addResourceHandlers(registry);
             }
         };

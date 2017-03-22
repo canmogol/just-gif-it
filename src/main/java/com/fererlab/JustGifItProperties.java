@@ -1,10 +1,12 @@
 package com.fererlab;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 
 import java.io.File;
 
 @ConfigurationProperties(prefix = "com.fererlab")
+@PropertySource("classpath:application.yml")
 public class JustGifItProperties {
 
     /**

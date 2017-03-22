@@ -1,17 +1,18 @@
 package com.fererlab.controller;
 
+import com.fererlab.JustGifItProperties;
+import com.fererlab.services.ConverterService;
+import com.fererlab.services.GifEncoderService;
+import com.fererlab.services.VideoDecoderService;
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FrameGrabber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.fererlab.services.ConverterService;
-import com.fererlab.services.GifEncoderService;
-import com.fererlab.services.VideoDecoderService;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -26,8 +27,10 @@ public class UploadController {
     private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup()
             .lookupClass());
 
-    @Value("${spring.http.multipart.location}")
-    private String location;
+    //    @Value("${spring.http.multipart.location}")
+//    private String location;
+    @Autowired
+    private JustGifItProperties properties;
 
     @Inject
     private ConverterService converterService;
@@ -45,13 +48,13 @@ public class UploadController {
                          @RequestParam("end") int end,
                          @RequestParam("speed") int speed,
                          @RequestParam("repeat") boolean repeat) throws IOException, FrameGrabber.Exception {
-        File videoFile = new File(location + "/" + System
+        File videoFile = new File(properties.getGifLocation().getAbsolutePath() + "/" + System
                 .currentTimeMillis() + ".mp4");
         file.transferTo(videoFile);
 
         log.info("Saved video file to {}", videoFile.getAbsolutePath());
 
-        Path output = Paths.get(location + "/gif/" + System.currentTimeMillis() + ".gif");
+        Path output = Paths.get(properties.getGifLocation().getAbsolutePath() + "/" + System.currentTimeMillis() + ".gif");
 
         FFmpegFrameGrabber frameGrabber = videoDecoderService.read(videoFile);
         AnimatedGifEncoder gifEncoder = gifEncoderService.getGifEncoder(repeat,
