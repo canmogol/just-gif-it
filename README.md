@@ -122,8 +122,25 @@ same request with the user and password as basic auth, should return more inform
 }
 ```
  
+## Deploying with Docker to AWS
 
- 
+#### Docker Maven Plugin
+
+After the `mvn clean install` command, 
+Using the `./mvnw docker:build` command, 
+docker plugin created by spotify will create a docker image.
+
+you can test the created image with command `docker run -it -p 80:8080 canm/just-gif-it` which will run the image in interactive mode and map the container's 8080 port to host's 80 port.
+
+#### Deploy to AWS
+
+For this part, follow the instructions from console.aws.amazon.com/ecs.
+
+from command line, login to the aws cloud by `aws ecr get-login --region us-east-1` command, if you did not logged in already then issue command `aws configure`
+
+After get-login command, it should print out an aws login command, execute that command.
+
+and follow the instructions from aws console.
 
 
 
